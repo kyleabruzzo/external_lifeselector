@@ -34,7 +34,6 @@ The interface presents players with different life paths, each featuring:
 
 ## Dependencies
 
-- FiveM Server
 - [ox_inventory](https://github.com/overextended/ox_inventory) (for item management)
 
 ## Configuration
