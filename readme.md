@@ -16,6 +16,8 @@ A dynamic life path selector resource for FiveM servers that allows players to c
 
 ## Preview
 
+![Main Interface](https://i.imgur.com/sEinMjO.jpeg)
+
 The interface presents players with different life paths, each featuring:
 - Custom background images
 - Path descriptions
@@ -24,6 +26,11 @@ The interface presents players with different life paths, each featuring:
 - Starting locations
 - Path-specific cutscenes
 - Starter item packages
+
+### Path Description
+![Path Selection](https://i.imgur.com/wtFCN0I.jpeg)
+
+
 
 ## Installation
 
@@ -34,6 +41,7 @@ The interface presents players with different life paths, each featuring:
 
 ## Dependencies
 
+- FiveM Server
 - [ox_inventory](https://github.com/overextended/ox_inventory) (for item management)
 
 ## Configuration
@@ -95,6 +103,22 @@ RegisterCommand('selectpath', function()
 end)
 ```
 
+Make sure to call the export at appropriate times in your server's logic to avoid showing the selector repeatedly.
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License.
+
 ## Credits
 
+- UI Design inspired by modern gaming interfaces
+- Cutscene system adapted for FiveM
 - Original module loading system based on ox_lib
