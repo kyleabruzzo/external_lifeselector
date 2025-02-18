@@ -41,7 +41,6 @@ The interface presents players with different life paths, each featuring:
 
 ## Dependencies
 
-- FiveM Server
 - [ox_inventory](https://github.com/overextended/ox_inventory) (for item management)
 
 ## Configuration
@@ -76,7 +75,7 @@ Paths = {
 ## Usage
 
 ### Player Usage
-- Access the life selector through configured commands or server events
+- Access the life selector through the export
 - Browse available paths
 - Select a path to view detailed information
 - Confirm selection to begin the journey
@@ -103,8 +102,6 @@ RegisterCommand('selectpath', function()
 end)
 ```
 
-Make sure to call the export at appropriate times in your server's logic to avoid showing the selector repeatedly.
-
 ## Contributing
 
 1. Fork the repository
@@ -119,6 +116,4 @@ This project is licensed under the MIT License.
 
 ## Credits
 
-- UI Design inspired by modern gaming interfaces
-- Cutscene system adapted for FiveM
 - Original module loading system based on ox_lib
