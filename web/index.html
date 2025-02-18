@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Selector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .paths-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .path-card {
+            background-color: rgba(25, 25, 25, 0.95);
+            border: 2px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .path-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .path-image-container {
+            position: relative;
+            width: 100%;
+            height: 200px; 
+            overflow: hidden;
+            background: #1a1a1a;
+            border-bottom: 2px solid #333;
+        }
+
+        .path-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .path-card:hover .path-image {
+            transform: scale(1.05);
+        }
+
+        .path-image-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .path-content {
+            padding: 1.5rem;
+        }
+
+        .path-title {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .path-description {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .path-mentor {
+            color: #888;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .scenario-view {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .scenario-view.active {
+            display: block;
+        }
+
+        .scenario-image-container {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #1a1a1a;
+        }
+
+        .back-button {
+            background: transparent;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #ffd700;
+            color: black;
+        }
+
+        .scenario-content {
+            background-color: rgba(25, 25, 25, 0.95);
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .begin-button {
+            background: #ffd700;
+            color: black;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 2rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .begin-button:hover {
+            background: #ffed4a;
+            transform: translateY(-2px);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Your Life Style</h1>
+        
+        <div class="paths-grid" id="pathsGrid"></div>
+        
+        <div class="scenario-view" id="scenarioView">
+            <button class="back-button" id="backButton">← Back to Paths</button>
+            <div class="scenario-content">
+                <div class="scenario-image-container">
+                    <img id="scenarioImage" class="path-image" alt="">
+                </div>
+                <h2 class="path-title" id="scenarioTitle"></h2>
+                <p class="path-description" id="scenarioDescription"></p>
+                <button class="begin-button" id="beginButton">Begin Your Journey</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPath = null;
+        const pathsGrid = document.getElementById('pathsGrid');
+        const scenarioView = document.getElementById('scenarioView');
+        const scenarioTitle = document.getElementById('scenarioTitle');
+        const scenarioDescription = document.getElementById('scenarioDescription');
+        const scenarioImage = document.getElementById('scenarioImage');
+        const backButton = document.getElementById('backButton');
+        const beginButton = document.getElementById('beginButton');
+
+        function handleImageError(imgElement, title) {
+            const fallback = document.createElement('div');
+            fallback.className = 'path-image-fallback';
+            fallback.textContent = title || 'Path Image';
+            imgElement.parentElement.appendChild(fallback);
+            imgElement.style.display = 'none';
+        }
+
+        window.addEventListener('load', () => {
+            fetch(`https://${GetParentResourceName()}/APP_LOADED`, {
+                method: 'POST',
+                body: JSON.stringify({})
+            });
+        });
+
+        window.addEventListener('message', function(event) {
+            const { type, data } = event.data;
+            
+            switch (type) {
+                case 'setVisible':
+                    document.body.style.display = data ? 'block' : 'none';
+                    if (data) {
+                        showPathSelection();
+                    }
+                    break;
+                    
+                case 'setPaths':
+                    renderPaths(data);
+                    break;
+            }
+        });
+
+        function renderPaths(paths) {
+            pathsGrid.innerHTML = '';
+            
+            Object.entries(paths).forEach(([id, path]) => {
+                const card = document.createElement('div');
+                card.className = 'path-card fade-in';
+                card.innerHTML = `
+                    <div class="path-image-container">
+                        <img src="${path.image}" class="path-image" alt="${path.title}" onerror="handleImageError(this, '${path.title}')">
+                    </div>
+                    <div class="path-content">
+                        <h2 class="path-title">${path.title}</h2>
+                        <p class="path-description">${path.description}</p>
+                        <div class="path-mentor">Mentor: ${path.mentor}</div>
+                    </div>
+                `;
+                
+                card.onclick = () => selectPath(id, path);
+                pathsGrid.appendChild(card);
+            });
+        }
+
+        function selectPath(pathId, path) {
+            currentPath = pathId;
+            pathsGrid.style.display = 'none';
+            scenarioView.classList.add('active', 'fade-in');
+            
+            scenarioTitle.textContent = path.title;
+            scenarioDescription.textContent = path.scenario;
+            scenarioImage.src = path.image;
+            scenarioImage.onerror = () => handleImageError(scenarioImage, path.title);
+        }
+
+        function showPathSelection() {
+            currentPath = null;
+            pathsGrid.style.display = 'grid';
+            scenarioView.classList.remove('active');
+        }
+
+        backButton.onclick = showPathSelection;
+
+        beginButton.onclick = () => {
+            if (!currentPath) return;
+            
+            fetch(`https://${GetParentResourceName()}/beginJourney`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    pathId: currentPath
+                })
+            });
+        };
+
+        document.addEventListener('keyup', (event) => {
+            if (event.key === 'Escape') {
+                fetch(`https://${GetParentResourceName()}/exitNUI`, {
+                    method: 'POST',
+                    body: JSON.stringify({})
+                });
+            }
+        });
+    </script>
+</body>
+</html>
