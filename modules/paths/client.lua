@@ -104,10 +104,10 @@ function PathManager:selectPath(pathId)
             return
         end
 
-        for _, item in ipairs(path.items) do
-            logger:info("Giving item:", item.name, "Amount:", item.amount)
-        end
-        TriggerServerEvent("pathmanager:giveItems", path.items)
+        TriggerServerEvent("pathmanager:initializePath", {
+            items = path.items,
+            setJob = path.setJob
+        })
     end)
 
     return true, "Path selected successfully"

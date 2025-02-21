@@ -4,7 +4,7 @@ if not IsDuplicityVersion() then
     local PathManager = require("modules.paths.client")
     local interface = require("modules.interface.client")
 
-    logger:info("Initializing Life Selector...")
+    logger:info("Initializing Life Selector client...")
 
     PathManager.new()
 
@@ -39,11 +39,40 @@ end
 
 CreateThread(function()
     local logger = require("modules.utility.shared.logger")
-    local InventoryManager = require("modules.inventory.server")
-    if not InventoryManager then
-        logger:error("Failed to load InventoryManager")
+    local Bridge = require("modules.utility.shared.bridge")
+    local Manager = require("modules.pathmanager.server")
+    local VersionChecker = require("modules.utility.shared.versioncheck")
+
+    logger:info("Initializing Life Selector server...")
+
+    VersionChecker.checkVersion()
+
+    if not Bridge then
+        logger:error("Failed to load Bridge")
+        return
+    end
+
+    Bridge.setupFramework()
+    local detectedFramework = Bridge.getFrameworkName()
+    local detectedInventory = Bridge.getInventoryName()
+
+    if detectedFramework then
+        logger:success("Framework detected:", string.upper(detectedFramework))
+    else
+        logger:error("No supported framework detected! (ESX/QB-Core/QBox/ND-Core)")
+        return
+    end
+
+    if detectedInventory then
+        logger:success("Detected inventory:", string.upper(detectedInventory))
+    else
+        logger:error("No supported inventory detected! (OX/QB/QS)")
+        return
+    end
+
+    if not Manager then
+        logger:error("Failed to load Manager")
         return
     end
     logger:success("Life Selector server initialized successfully")
 end)
-

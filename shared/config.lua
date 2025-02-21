@@ -21,14 +21,46 @@ return {
             spawnLocation = vector4(782.93, -1867.95, 29.29, 78.92),
             cutscene = {
                 name = "tun_meet_int",
-                duration = 30000,
+                duration = 3000,
                 weather = "CLEAR",
                 coords = vector3(-2201.717, 1132.0045, -23.26399),
                 time = {hour = 21, minute = 0},
             },
+            setJob = {
+                enabled = true,
+                job = "racer",
+                grade = 0
+            },
             items = {
-                {name = 'radio', label = 'Phone', amount = 1},
-                {name = 'armour', label = 'Repair Kit', amount = 1}
+                {
+                    name = 'radio', 
+                    label = 'Phone', 
+                    amount = 1
+                },
+                {
+                    name = 'armour', 
+                    label = 'Repair Kit', 
+                    amount = 1,
+                    metadata = {
+                        description = "Professional Race Repair Kit",
+                        durability = 100,
+                        type = "racing_kit"
+                    }
+                },
+                {
+                    name = 'water', 
+                    label = 'Water', 
+                    amount = 2
+                },
+                {
+                    name = 'nitrous',
+                    label = 'NOS',
+                    amount = 1,
+                    metadata = {
+                        durability = 100,
+                        type = "racing_nos"
+                    }
+                }
             }
         },
     }

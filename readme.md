@@ -1,3 +1,4 @@
+```markdown
 # Life Selector for FiveM [WIP]
 
 ⚠️ **This resource is currently a Work in Progress. Features and documentation may change.**
@@ -13,6 +14,8 @@ A dynamic life path selector resource for FiveM servers that allows players to c
 - 🌈 Dynamic weather and time settings
 - 🐛 Debug commands for development
 - 📱 Responsive and modern UI design
+- 🔄 Multi-framework support
+- 📦 Multiple inventory system support
 
 ## Preview
 
@@ -30,18 +33,23 @@ The interface presents players with different life paths, each featuring:
 ### Path Description
 ![Path Selection](https://i.imgur.com/wtFCN0I.jpeg)
 
+## Framework Support
+- ✅ ESX (Tested)
+- 🚧 QB-Core (Not Tested)
+- 🚧 QBox Core (Not Tested)
+- 🚧 ND Core (Not Tested)
 
+## Inventory Support
+- ✅ ox_inventory (Tested)
+- 🚧 qb-inventory (Not Tested)
+- 🚧 qs-inventory (Not Tested)
 
 ## Installation
 
 1. Download the latest release
-2. Extract the `life-selector` folder to your server's `resources` directory
-3. Add `ensure life-selector` to your `server.cfg`
+2. Extract the `external_lifeselector` folder to your server's `resources` directory
+3. Add `ensure external_lifeselector` to your `server.cfg`
 4. Configure paths in `config.lua`
-
-## Dependencies
-
-- [ox_inventory](https://github.com/overextended/ox_inventory) (for item management)
 
 ## Configuration
 
@@ -64,9 +72,29 @@ Paths = {
             coords = vector3(-2201.717, 1132.0045, -23.26399),
             time = {hour = 21, minute = 0},
         },
+        setJob = {
+            enabled = true,
+            job = "racer",
+            grade = 0
+        },
         items = {
-            {name = 'radio', label = 'Phone', amount = 1},
-            {name = 'armour', label = 'Repair Kit', amount = 1}
+            -- Simple item without metadata
+            {
+                name = 'radio', 
+                label = 'Phone', 
+                amount = 1
+            },
+            -- Complex item with metadata
+            {
+                name = 'armour', 
+                label = 'Repair Kit', 
+                amount = 1,
+                metadata = {
+                    description = "Professional Race Repair Kit",
+                    durability = 100,
+                    type = "racing_kit"
+                }
+            }
         }
     }
 }
@@ -86,7 +114,7 @@ The Life Selector can be triggered from any resource using the export:
 
 ```lua
 -- Show life selector UI
-exports['life-selector']:showLifeSelector()
+exports['external_lifeselector']:showLifeSelector()
 
 -- Debug Commands (when enabled)
 /lifeselector -- Opens the life selector UI
@@ -98,7 +126,7 @@ exports['life-selector']:showLifeSelector()
 ```lua
 -- Basic implementation in your resource
 RegisterCommand('selectpath', function()
-    exports['life-selector']:showLifeSelector()
+    exports['external_lifeselector']:showLifeSelector()
 end)
 ```
 
@@ -109,3 +137,8 @@ This project is licensed under the MIT License.
 ## Credits
 
 - Original module loading system based on ox_lib
+
+Legend:
+- ✅ Tested and Working
+- 🚧 Implemented but Not Tested
+```

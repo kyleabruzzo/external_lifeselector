@@ -5,10 +5,11 @@ local colors = {
     error = "^1",
     success = "^2",
     warn = "^3",
-    info = "^5"
+    info = "^5",
+    uptodate = "^4",   
+    outdated = "^6"    
 }
 
-local resourceName = ("[^6%s^7]"):format(GetCurrentResourceName())
 
 local function formatMessage(prefix, message, ...)
     local args = {...}
@@ -26,7 +27,7 @@ local function formatMessage(prefix, message, ...)
         fullMessage = fullMessage .. " " .. table.concat(args, " ")
     end
     
-    return ("%s %s%s%s"):format(resourceName, prefix, fullMessage, colors.default)
+    return ("%s%s%s"):format(prefix, fullMessage, colors.default)
 end
 
 function logger:error(message, ...)
@@ -39,6 +40,14 @@ end
 
 function logger:warn(message, ...)
     print(formatMessage(colors.warn, "[WARNING] "..message, ...))
+end
+
+function logger:versionCheckerSuccess(message, ...)
+    print(formatMessage(colors.uptodate, "[UPTODATE] "..message, ...))
+end
+
+function logger:versionCheckerError(message, ...)
+    print(formatMessage(colors.outdated, "[OUTDATED] "..message, ...))
 end
 
 function logger:info(message, ...)
