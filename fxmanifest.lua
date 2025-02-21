@@ -3,7 +3,7 @@ game 'gta5'
 
 name 'life-selector'
 author 'kyle'
-version '1.0.0'
+version '1.0.1'
 description 'Life Selector for FiveM'
 
 shared_scripts {
