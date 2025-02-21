@@ -1,4 +1,4 @@
-```markdown
+
 # Life Selector for FiveM [WIP]
 
 ⚠️ **This resource is currently a Work in Progress. Features and documentation may change.**
@@ -141,4 +141,3 @@ This project is licensed under the MIT License.
 Legend:
 - ✅ Tested and Working
 - 🚧 Implemented but Not Tested
-```
