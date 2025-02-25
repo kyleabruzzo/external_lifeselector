@@ -20,9 +20,9 @@ function bridge.setupFramework()
         if GetResourceState('ox_inventory') == 'started' then
             bridge.inventory = 'ox'
         end
-    elseif GetResourceState('qbx-core') == 'started' then
+    elseif GetResourceState('qbx_core') == 'started' then
         bridge.framework = 'qbox'
-        bridge.frameworkObject = exports['qbx-core']:GetCoreObject()
+        bridge.frameworkObject = exports.qbx_core
         
         if GetResourceState('ox_inventory') == 'started' then
             bridge.inventory = 'ox'
@@ -48,8 +48,10 @@ function bridge.getPlayer(source)
         return bridge.frameworkObject:getPlayer(source)
     elseif bridge.framework == 'esx' then
         return bridge.frameworkObject.GetPlayerFromId(source)
-    elseif bridge.framework == 'qbcore' or bridge.framework == 'qbox' then
+    elseif bridge.framework == 'qbcore' then
         return bridge.frameworkObject.Functions.GetPlayer(source)
+    elseif bridge.framework == 'qbox' then
+        return exports.qbx_core:GetPlayer(source)
     end
     return nil
 end
@@ -63,8 +65,11 @@ function bridge.setJob(source, job, grade)
     elseif bridge.framework == 'esx' then
         player.setJob(job, grade or 0)
         return true
-    elseif bridge.framework == 'qbcore' or bridge.framework == 'qbox' then
+    elseif bridge.framework == 'qbcore' then
         player.Functions.SetJob(job, grade or 0)
+        return true
+    elseif bridge.framework == 'qbox' then
+        exports.qbx_core:SetJob(player, job, grade or 0)
         return true
     end
     return false
@@ -97,8 +102,10 @@ function bridge.addItem(source, itemName, amount, metadata)
     local player = bridge.getPlayer(source)
     if not player then return false end
 
-    if bridge.framework == 'qbcore' or bridge.framework == 'qbox' then
+    if bridge.framework == 'qbcore' then
         return player.Functions.AddItem(itemName, amount)
+    elseif bridge.framework == 'qbox' then
+        return exports.ox_inventory:AddItem(source, itemName, amount)
     end
     
     return false
